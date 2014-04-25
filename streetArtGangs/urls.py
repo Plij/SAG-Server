@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^authentication/', views.UserAuthView.as_view(),
         name='user-detail'),
     url(r'^police/(\d)/$', 'server.views.policeBust'),
+    url(r'^events/(\d)/playername/(\w+)/playergang/(\w+)/playerpos/([\d,]+)/$', 'server.views.eventHappened'),
     url(r'^', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 )

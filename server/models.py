@@ -14,6 +14,7 @@ class UserProfile(models.Model):
     longitude = models.FloatField(blank=True, null=True)
     mood = models.CharField(max_length=100, blank=True, null=True)
     last_action =  models.DateTimeField(blank=True, null=True)
+    spraying = models.IntegerField(default=0)
     bustedviapolice = models.IntegerField(default=0)
 
     def __unicode__(self):

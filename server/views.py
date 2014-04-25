@@ -6,6 +6,10 @@ from rest_framework import status
 from django.utils import timezone
 import datetime
 import logging
+import urllib2
+import hashlib
+import json, uuid
+import os, base64
 
 #Authentication and Permissions
 from rest_framework.permissions import IsAuthenticated
@@ -26,10 +30,60 @@ class VenueViewSet(viewsets.ModelViewSet):
 	queryset = Venue.objects.all()
 	serializer_class = VenueSerializer
 
+def eventHappened(request, eventId, playername, playergang, playerpos):
+	game_key = 'f58c639185081f602fee6f6b725349b7'
+	secret_key = '10d560a88e6b0050f8a42a60e806f5fc909f9ad3'
+	endpoint_url = 'http://api.gameanalytics.com/1'
+	
+	mac = ''.join(['{:02x}'.format((uuid.getnode() >> i) & 0xff) for i in range(0,8*6,8)][::-1])
+	mac = ''.join([x.upper() for x in mac])
+	
+	m = hashlib.sha1()
+	m.update(mac)
+	user_id = m.hexdigest().upper()	
+	
+	category = 'design'
+	
+	message = {}
+	eventId = int(eventId)
+	
+	#make position from string 
+	playerpos = playerpos.split(',')
+
+	print playerpos
+	#req fields
+	if eventId == 1:
+		message["event_id"] = "spray:player"
+	elif eventId == 2:
+		message["event_id"] = "policebust:player"
+	elif eventId == 3:
+		message["event_id"] = "playerbust:player"
+	
+	message["user_id"] = user_id
+	message["session_id"] = str(base64.b64encode(os.urandom(16)))
+	message["build"] = "1.0a"
+	message["area"] = "Oulu3D"
+	#later add location somehow (maybe pass array in url?)
+	print message
+	json_message = json.dumps(message)
+	digest = hashlib.md5()
+	digest.update(json_message)
+	digest.update(secret_key)
+	json_authorization = {'Authorization' : digest.hexdigest()}
+
+	url = "%s/%s/%s" % (endpoint_url, game_key, category)
+	request = urllib2.Request(url, json_message, json_authorization)
+		
+	response = urllib2.urlopen(request)
+	print response.read()
+  
+	return HttpResponse('<html><body>Event sent!</body></html>')
 
 def policeBust(request, gangsterId):
 	queryset = UserProfile.objects.get(pk=gangsterId)
 	queryset.bustedviapolice = 1
+	queryset.busts = queryset.busts + 1
+	queryset.points = queryset.points - 30
 	queryset.save()
 	return HttpResponse('<html><body>Jes %s</body></html>' % queryset)
 
