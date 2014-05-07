@@ -5,8 +5,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.utils import timezone
 import datetime
+import time
 import logging
-import urllib2
+import urllib2, urllib
 import hashlib
 import json, uuid
 import os, base64
@@ -30,6 +31,49 @@ class VenueViewSet(viewsets.ModelViewSet):
 	queryset = Venue.objects.all()
 	serializer_class = VenueSerializer
 
+def getHeatMapData(request, event, timestamp):
+	#Yesterday
+	if timestamp == 'y':
+		start = datetime.date.today() - datetime.timedelta(1)
+		start = start.strftime("%s")
+		end = time.time()
+	elif timestamp == 'a':
+		start = 1394100066
+		end = 1399459452
+	end = round(end, 0)
+	print start, end
+	
+	mac = ''.join(['{:02x}'.format((uuid.getnode() >> i) & 0xff) for i in range(0,8*6,8)][::-1])
+        mac = ''.join([x.upper() for x in mac])
+
+        m = hashlib.sha1()
+        m.update(mac)
+        user_id = m.hexdigest().upper()
+
+	game_key = 'f58c639185081f602fee6f6b725349b7'
+	api_key = "3e2ca2703b96e4a27c3ccf450da9a9ba29946237"
+	secret_key = '10d560a88e6b0050f8a42a60e806f5fc909f9ad3'
+	
+	url = 'http://data-api.gameanalytics.com/heatmap/?'	
+	
+	encoding = urllib.urlencode([('game_key',game_key), ('event_ids',str(event)), ('area','Oulu3D'), ('start_ts',start), ('end_ts',end)])
+	
+	digest = hashlib.md5()
+        digest.update(encoding)
+	digest.update(api_key)
+	
+        json_authorization = {'Authorization' : digest.hexdigest()}
+
+	request = urllib2.Request(url+encoding, None, json_authorization)
+        print encoding 
+	response = urllib2.urlopen(request)
+        print response.read()
+        jsonres = json.dumps(response.read())	
+        
+	print jsonres
+	return HttpResponse('<html><body>Event sent!</body></html>')
+
+
 def eventHappened(request, eventId, playername, playergang, playerpos):
 	game_key = 'f58c639185081f602fee6f6b725349b7'
 	secret_key = '10d560a88e6b0050f8a42a60e806f5fc909f9ad3'
@@ -47,22 +91,27 @@ def eventHappened(request, eventId, playername, playergang, playerpos):
 	message = {}
 	eventId = int(eventId)
 	
-	#make position from string 
-	playerpos = playerpos.split(',')
+	#make position from string so split from ,
+	playerposi = playerpos.split('%2C')
 
-	print playerpos
+	print playerpos , " joo " , len(playerpos)
 	#req fields
 	if eventId == 1:
-		message["event_id"] = "spray:player"
+		message["event_id"] = "spray:" + str(playergang)
 	elif eventId == 2:
-		message["event_id"] = "policebust:player"
+		message["event_id"] = "policebust:" + str(playergang)
 	elif eventId == 3:
-		message["event_id"] = "playerbust:player"
+		message["event_id"] = "playerbust:" + str(playergang)
 	
 	message["user_id"] = user_id
 	message["session_id"] = str(base64.b64encode(os.urandom(16)))
 	message["build"] = "1.0a"
 	message["area"] = "Oulu3D"
+	message['x'] = float(playerposi[0])
+	message['y'] = float(playerposi[1])
+	message['z'] = float(playerposi[2])
+	#message['value'] = 'playergang:'+playergang
+	
 	#later add location somehow (maybe pass array in url?)
 	print message
 	json_message = json.dumps(message)
@@ -82,7 +131,7 @@ def eventHappened(request, eventId, playername, playergang, playerpos):
 def policeBust(request, gangsterId):
 	queryset = UserProfile.objects.get(pk=gangsterId)
 	queryset.bustedviapolice = 1
-	queryset.busts = queryset.busts + 1
+	queryset.busted = queryset.busted + 1
 	queryset.points = queryset.points - 30
 	queryset.save()
 	return HttpResponse('<html><body>Jes %s</body></html>' % queryset)
@@ -117,7 +166,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 	serializer_class = UserProfileSerializer
 	queryset = UserProfile.objects.all()
 
-	logger = logging.getLogger(__name__)
+	
 	
 	def get_queryset(self):
 		"""
@@ -127,7 +176,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 		active = self.request.QUERY_PARAMS.get('active', None)
 		if active is not None:
 			queryset = queryset.filter(last_action__gte=timezone.now() - datetime.timedelta(seconds=30))
-		UserProfileViewSet.logger.error('Errori querysetissa')
+		
 		return queryset		
 
 	
