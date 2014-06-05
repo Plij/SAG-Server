@@ -1,0 +1,6 @@
+StreetArtGangs Django server with some extra functionality for GameAnalytics API connections
+
+views.py is where all the functionality for GA and other realXtend to internet.
+urls.py has been modified to accept urls with some data, for GameAnalytics.
+
+-TODO: When realXtend supports POST, PATCH and PUT in its httpmodule, move the GameAnalytics posts there. 
