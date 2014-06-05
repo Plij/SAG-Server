@@ -11,6 +11,7 @@ import urllib2, urllib
 import hashlib
 import json, uuid
 import os, base64
+import math
 
 #Authentication and Permissions
 from rest_framework.permissions import IsAuthenticated
@@ -32,14 +33,24 @@ class VenueViewSet(viewsets.ModelViewSet):
 	serializer_class = VenueSerializer
 
 def getHeatMapData(request, event, timestamp):
-	#Yesterday
-	if timestamp == 'y':
-		start = datetime.date.today() - datetime.timedelta(1)
-		start = start.strftime("%s")
-		end = time.time()
-	elif timestamp == 'a':
-		start = 1394100066
-		end = 1399459452
+	#Codes a = All of the session data.
+	#
+	if timestamp == 'a':
+		start = 1400310219
+		end = 1400609019
+	elif timestamp == '1':
+		start = 1400310219
+		end = 1400389200
+	elif timestamp == '2':
+		start = 1400371200
+		end = 1400475600
+	elif timestamp == '3':
+		start = 1400457600
+		end = 1400562000
+	elif timestamp == '4':
+		start = 1400623200
+		end = 1400652000	
+
 	end = round(end, 0)
 	print start, end
 	
@@ -67,14 +78,13 @@ def getHeatMapData(request, event, timestamp):
 	request = urllib2.Request(url+encoding, None, json_authorization)
         print encoding 
 	response = urllib2.urlopen(request)
-        print response.read()
-        jsonres = json.dumps(response.read())	
         
-	print jsonres
-	return HttpResponse('<html><body>Event sent!</body></html>')
-
-
-def eventHappened(request, eventId, playername, playergang, playerpos):
+        
+	r = HttpResponse(response.read())	 
+	print r
+	return HttpResponse(r)
+#Playerinfo can be the name of player or gang name of player, depending on the event.
+def eventHappened(request, eventId, playername, playerpos, playerinfo, playerdata):
 	game_key = 'f58c639185081f602fee6f6b725349b7'
 	secret_key = '10d560a88e6b0050f8a42a60e806f5fc909f9ad3'
 	endpoint_url = 'http://api.gameanalytics.com/1'
@@ -91,26 +101,41 @@ def eventHappened(request, eventId, playername, playergang, playerpos):
 	message = {}
 	eventId = int(eventId)
 	
-	#make position from string so split from ,
-	playerposi = playerpos.split('%2C')
-
-	print playerpos , " joo " , len(playerpos)
 	#req fields
 	if eventId == 1:
-		message["event_id"] = "spray:" + str(playergang)
+		message["event_id"] = "spray:" + str(playerinfo)
 	elif eventId == 2:
-		message["event_id"] = "policebust:" + str(playergang)
+		message["event_id"] = "policebust:" + str(playerinfo)
 	elif eventId == 3:
-		message["event_id"] = "playerbust:" + str(playergang)
+		message["event_id"] = "playerbust:" + str(playerinfo)
+	elif eventId == 4:
+		message["event_id"] = "rexLogin:" + str(playerinfo)	
+	elif eventId == 5:
+		message["event_id"] = "rexLogout:" + str(playerinfo)
+	elif eventId == 6:
+		message["event_id"] = "watcherOnSpray:" + str(playerinfo)
+	elif eventId == 7:
+		message["event_id"] = "watcherOnPoliceBust:" + str(playerinfo)
+	elif eventId == 8:
+		message["event_id"] = "policeInfoOnBust:" + str(playerinfo)	
 	
 	message["user_id"] = user_id
-	message["session_id"] = str(base64.b64encode(os.urandom(16)))
+	if (eventId != 4 and eventId != 5 and eventId != 6 and eventId != 7):
+		message["session_id"] = str(base64.b64encode(os.urandom(16)))
+	else:
+		message["session_id"] = str(playerdata)	
+
 	message["build"] = "1.0a"
 	message["area"] = "Oulu3D"
-	message['x'] = float(playerposi[0])
-	message['y'] = float(playerposi[1])
-	message['z'] = float(playerposi[2])
-	#message['value'] = 'playergang:'+playergang
+	
+	if (eventId != 4 and eventId != 5):
+		playerposi = playerpos.split('%2C')
+		#Add multiplier because GA server makes values to int.
+		
+		message['x'] = math.modf(float(playerposi[0]) * 1000000)[1]
+		message['y'] = float(playerposi[1])
+		message['z'] = math.modf(float(playerposi[2]) * 1000000)[1]
+		
 	
 	#later add location somehow (maybe pass array in url?)
 	print message
