@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>server.serializers</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="server-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="server-module.html">Package&nbsp;server</a> ::
+        Module&nbsp;serializers
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="server.serializers-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="server.serializers-module.html">Module server.serializers</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">rest_framework</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module server.serializers=server.serializers-module.html"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-0', 'serializers', 'link-0');">serializers</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package server=server-module.html"><a title="server" class="py-name" href="#" onclick="return doclink('link-1', 'server', 'link-1');">server</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module server.models=server.models-module.html"><a title="server.models" class="py-name" href="#" onclick="return doclink('link-2', 'models', 'link-2');">models</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class server.models.Venue=server.models.Venue-class.html"><a title="server.models.Venue" class="py-name" href="#" onclick="return doclink('link-3', 'Venue', 'link-3');">Venue</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Class server.models.UserProfile=server.models.UserProfile-class.html"><a title="server.models.UserProfile" class="py-name" href="#" onclick="return doclink('link-4', 'UserProfile', 'link-4');">UserProfile</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Class server.models.Gang=server.models.Gang-class.html"><a title="server.models.Gang" class="py-name" href="#" onclick="return doclink('link-5', 'Gang', 'link-5');">Gang</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Class server.models.Message=server.models.Message-class.html"><a title="server.models.Message" class="py-name" href="#" onclick="return doclink('link-6', 'Message', 'link-6');">Message</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">contrib</tt><tt class="py-op">.</tt><tt class="py-name">auth</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="server.models" class="py-name" href="#" onclick="return doclink('link-7', 'models', 'link-2');">models</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">User</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="UserProfileSerializer"></a><div id="UserProfileSerializer-def"><a name="L5"></a><tt class="py-lineno"> 5</tt> <a class="py-toggle" href="#" id="UserProfileSerializer-toggle" onclick="return toggle('UserProfileSerializer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.UserProfileSerializer-class.html">UserProfileSerializer</a><tt class="py-op">(</tt><tt class="py-base-class">serializers</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelSerializer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserProfileSerializer-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="UserProfileSerializer-expanded"><a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">        <tt class="py-comment">#TODO: Properly use depth for compiling these fields</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">        <tt id="link-8" class="py-name" targets="Variable server.serializers.UserProfileSerializer.username=server.serializers.UserProfileSerializer-class.html#username"><a title="server.serializers.UserProfileSerializer.username" class="py-name" href="#" onclick="return doclink('link-8', 'username', 'link-8');">username</a></tt>  <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-9', 'serializers', 'link-0');">serializers</a></tt><tt class="py-op">.</tt><tt class="py-name">Field</tt><tt class="py-op">(</tt><tt class="py-name">source</tt> <tt class="py-op">=</tt> <tt class="py-string">'user.username'</tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">        <tt id="link-10" class="py-name" targets="Variable server.models.Gang.color=server.models.Gang-class.html#color,Variable server.serializers.UserProfileSerializer.color=server.serializers.UserProfileSerializer-class.html#color"><a title="server.models.Gang.color
+server.serializers.UserProfileSerializer.color" class="py-name" href="#" onclick="return doclink('link-10', 'color', 'link-10');">color</a></tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-11', 'serializers', 'link-0');">serializers</a></tt><tt class="py-op">.</tt><tt class="py-name">Field</tt><tt class="py-op">(</tt><tt class="py-name">source</tt> <tt class="py-op">=</tt> <tt class="py-string">'gang.color'</tt><tt class="py-op">)</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">        <tt id="link-12" class="py-name" targets="Variable server.serializers.UserProfileSerializer.venues=server.serializers.UserProfileSerializer-class.html#venues"><a title="server.serializers.UserProfileSerializer.venues" class="py-name" href="#" onclick="return doclink('link-12', 'venues', 'link-12');">venues</a></tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-13', 'serializers', 'link-0');">serializers</a></tt><tt class="py-op">.</tt><tt class="py-name">PrimaryKeyRelatedField</tt><tt class="py-op">(</tt><tt class="py-name">many</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">read_only</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">        <tt id="link-14" class="py-name" targets="Method server.models.UserProfile.full_name()=server.models.UserProfile-class.html#full_name,Variable server.serializers.UserProfileSerializer.full_name=server.serializers.UserProfileSerializer-class.html#full_name"><a title="server.models.UserProfile.full_name
+server.serializers.UserProfileSerializer.full_name" class="py-name" href="#" onclick="return doclink('link-14', 'full_name', 'link-14');">full_name</a></tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-15', 'serializers', 'link-0');">serializers</a></tt><tt class="py-op">.</tt><tt class="py-name">Field</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">        <tt id="link-16" class="py-name" targets="Method server.models.UserProfile.ranking()=server.models.UserProfile-class.html#ranking,Variable server.serializers.UserProfileSerializer.ranking=server.serializers.UserProfileSerializer-class.html#ranking"><a title="server.models.UserProfile.ranking
+server.serializers.UserProfileSerializer.ranking" class="py-name" href="#" onclick="return doclink('link-16', 'ranking', 'link-16');">ranking</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-17', 'serializers', 'link-0');">serializers</a></tt><tt class="py-op">.</tt><tt class="py-name">Field</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"> </tt>
+<a name="UserProfileSerializer.Meta"></a><div id="UserProfileSerializer.Meta-def"><a name="L14"></a><tt class="py-lineno">14</tt> <a class="py-toggle" href="#" id="UserProfileSerializer.Meta-toggle" onclick="return toggle('UserProfileSerializer.Meta');">-</a><tt class="py-line">        <tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.UserProfileSerializer.Meta-class.html">Meta</a><tt class="py-op">:</tt> </tt>
+</div><div id="UserProfileSerializer.Meta-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="UserProfileSerializer.Meta-expanded"><a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">                <tt id="link-18" class="py-name" targets="Variable server.serializers.GangSerializer.Meta.model=server.serializers.GangSerializer.Meta-class.html#model,Variable server.serializers.MessageSerializer.Meta.model=server.serializers.MessageSerializer.Meta-class.html#model,Variable server.serializers.UserProfileSerializer.Meta.model=server.serializers.UserProfileSerializer.Meta-class.html#model,Variable server.serializers.UserSerializer.Meta.model=server.serializers.UserSerializer.Meta-class.html#model,Variable server.serializers.VenueSerializer.Meta.model=server.serializers.VenueSerializer.Meta-class.html#model"><a title="server.serializers.GangSerializer.Meta.model
+server.serializers.MessageSerializer.Meta.model
+server.serializers.UserProfileSerializer.Meta.model
+server.serializers.UserSerializer.Meta.model
+server.serializers.VenueSerializer.Meta.model" class="py-name" href="#" onclick="return doclink('link-18', 'model', 'link-18');">model</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="server.models.UserProfile" class="py-name" href="#" onclick="return doclink('link-19', 'UserProfile', 'link-4');">UserProfile</a></tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">                <tt id="link-20" class="py-name" targets="Variable server.serializers.GangSerializer.Meta.fields=server.serializers.GangSerializer.Meta-class.html#fields,Variable server.serializers.MessageSerializer.Meta.fields=server.serializers.MessageSerializer.Meta-class.html#fields,Variable server.serializers.UserProfileSerializer.Meta.fields=server.serializers.UserProfileSerializer.Meta-class.html#fields,Variable server.serializers.UserSerializer.Meta.fields=server.serializers.UserSerializer.Meta-class.html#fields,Variable server.serializers.VenueSerializer.Meta.fields=server.serializers.VenueSerializer.Meta-class.html#fields"><a title="server.serializers.GangSerializer.Meta.fields
+server.serializers.MessageSerializer.Meta.fields
+server.serializers.UserProfileSerializer.Meta.fields
+server.serializers.UserSerializer.Meta.fields
+server.serializers.VenueSerializer.Meta.fields" class="py-name" href="#" onclick="return doclink('link-20', 'fields', 'link-20');">fields</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'id'</tt><tt class="py-op">,</tt> <tt class="py-string">'user'</tt><tt class="py-op">,</tt> <tt class="py-string">'username'</tt><tt class="py-op">,</tt><tt class="py-string">'latitude'</tt><tt class="py-op">,</tt> <tt class="py-string">'longitude'</tt><tt class="py-op">,</tt> <tt class="py-string">'tags_created'</tt><tt class="py-op">,</tt> <tt class="py-string">'tags_deleted'</tt><tt class="py-op">,</tt> <tt class="py-string">'last_action'</tt><tt class="py-op">,</tt><tt class="py-string">'points'</tt><tt class="py-op">,</tt> <tt class="py-string">'gang'</tt><tt class="py-op">,</tt> <tt class="py-string">'color'</tt><tt class="py-op">,</tt> <tt class="py-string">'busted'</tt><tt class="py-op">,</tt> <tt class="py-string">'busts'</tt><tt class="py-op">,</tt> <tt class="py-string">'full_name'</tt><tt class="py-op">,</tt> <tt class="py-string">'ranking'</tt><tt class="py-op">,</tt> <tt class="py-string">'venues'</tt><tt class="py-op">,</tt> <tt class="py-string">'mood'</tt><tt class="py-op">,</tt> <tt class="py-string">'spraying'</tt><tt class="py-op">,</tt> <tt class="py-string">'bustedviapolice'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"> </tt>
+<a name="MessageSerializer"></a><div id="MessageSerializer-def"><a name="L19"></a><tt class="py-lineno">19</tt> <a class="py-toggle" href="#" id="MessageSerializer-toggle" onclick="return toggle('MessageSerializer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.MessageSerializer-class.html">MessageSerializer</a><tt class="py-op">(</tt><tt class="py-base-class">serializers</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelSerializer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MessageSerializer-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="MessageSerializer-expanded"><a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">        <tt class="py-comment">#gangster = serializers.PrimaryKeyRelatedField(read_only=True)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"> </tt>
+<a name="MessageSerializer.Meta"></a><div id="MessageSerializer.Meta-def"><a name="L22"></a><tt class="py-lineno">22</tt> <a class="py-toggle" href="#" id="MessageSerializer.Meta-toggle" onclick="return toggle('MessageSerializer.Meta');">-</a><tt class="py-line">        <tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.MessageSerializer.Meta-class.html">Meta</a><tt class="py-op">:</tt> </tt>
+</div><div id="MessageSerializer.Meta-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="MessageSerializer.Meta-expanded"><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">                <tt id="link-21" class="py-name"><a title="server.serializers.GangSerializer.Meta.model
+server.serializers.MessageSerializer.Meta.model
+server.serializers.UserProfileSerializer.Meta.model
+server.serializers.UserSerializer.Meta.model
+server.serializers.VenueSerializer.Meta.model" class="py-name" href="#" onclick="return doclink('link-21', 'model', 'link-18');">model</a></tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name"><a title="server.models.Message" class="py-name" href="#" onclick="return doclink('link-22', 'Message', 'link-6');">Message</a></tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">                <tt id="link-23" class="py-name"><a title="server.serializers.GangSerializer.Meta.fields
+server.serializers.MessageSerializer.Meta.fields
+server.serializers.UserProfileSerializer.Meta.fields
+server.serializers.UserSerializer.Meta.fields
+server.serializers.VenueSerializer.Meta.fields" class="py-name" href="#" onclick="return doclink('link-23', 'fields', 'link-20');">fields</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'id'</tt><tt class="py-op">,</tt> <tt class="py-string">'gangster'</tt><tt class="py-op">,</tt> <tt class="py-string">'timestamp'</tt><tt class="py-op">,</tt> <tt class="py-string">'text'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line"> </tt>
+<a name="GangSerializer"></a><div id="GangSerializer-def"><a name="L28"></a><tt class="py-lineno">28</tt> <a class="py-toggle" href="#" id="GangSerializer-toggle" onclick="return toggle('GangSerializer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.GangSerializer-class.html">GangSerializer</a><tt class="py-op">(</tt><tt class="py-base-class">serializers</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelSerializer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GangSerializer-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="GangSerializer-expanded"><a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt id="link-24" class="py-name" targets="Variable server.serializers.GangSerializer.gangsters=server.serializers.GangSerializer-class.html#gangsters"><a title="server.serializers.GangSerializer.gangsters" class="py-name" href="#" onclick="return doclink('link-24', 'gangsters', 'link-24');">gangsters</a></tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-25', 'serializers', 'link-0');">serializers</a></tt><tt class="py-op">.</tt><tt class="py-name">PrimaryKeyRelatedField</tt><tt class="py-op">(</tt><tt class="py-name">many</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">read_only</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line"> </tt>
+<a name="GangSerializer.Meta"></a><div id="GangSerializer.Meta-def"><a name="L31"></a><tt class="py-lineno">31</tt> <a class="py-toggle" href="#" id="GangSerializer.Meta-toggle" onclick="return toggle('GangSerializer.Meta');">-</a><tt class="py-line">        <tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.GangSerializer.Meta-class.html">Meta</a><tt class="py-op">:</tt> </tt>
+</div><div id="GangSerializer.Meta-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="GangSerializer.Meta-expanded"><a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">                <tt id="link-26" class="py-name"><a title="server.serializers.GangSerializer.Meta.model
+server.serializers.MessageSerializer.Meta.model
+server.serializers.UserProfileSerializer.Meta.model
+server.serializers.UserSerializer.Meta.model
+server.serializers.VenueSerializer.Meta.model" class="py-name" href="#" onclick="return doclink('link-26', 'model', 'link-18');">model</a></tt> <tt class="py-op">=</tt> <tt id="link-27" class="py-name"><a title="server.models.Gang" class="py-name" href="#" onclick="return doclink('link-27', 'Gang', 'link-5');">Gang</a></tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">                <tt id="link-28" class="py-name"><a title="server.serializers.GangSerializer.Meta.fields
+server.serializers.MessageSerializer.Meta.fields
+server.serializers.UserProfileSerializer.Meta.fields
+server.serializers.UserSerializer.Meta.fields
+server.serializers.VenueSerializer.Meta.fields" class="py-name" href="#" onclick="return doclink('link-28', 'fields', 'link-20');">fields</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'id'</tt><tt class="py-op">,</tt> <tt class="py-string">'name'</tt><tt class="py-op">,</tt> <tt class="py-string">'color'</tt><tt class="py-op">,</tt> <tt class="py-string">'gangsters'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt>
+<a name="UserSerializer"></a><div id="UserSerializer-def"><a name="L36"></a><tt class="py-lineno">36</tt> <a class="py-toggle" href="#" id="UserSerializer-toggle" onclick="return toggle('UserSerializer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.UserSerializer-class.html">UserSerializer</a><tt class="py-op">(</tt><tt class="py-base-class">serializers</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelSerializer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserSerializer-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="UserSerializer-expanded"><a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line"> </tt>
+<a name="UserSerializer.Meta"></a><div id="UserSerializer.Meta-def"><a name="L38"></a><tt class="py-lineno">38</tt> <a class="py-toggle" href="#" id="UserSerializer.Meta-toggle" onclick="return toggle('UserSerializer.Meta');">-</a><tt class="py-line">        <tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.UserSerializer.Meta-class.html">Meta</a><tt class="py-op">:</tt> </tt>
+</div><div id="UserSerializer.Meta-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="UserSerializer.Meta-expanded"><a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">                <tt id="link-29" class="py-name"><a title="server.serializers.GangSerializer.Meta.model
+server.serializers.MessageSerializer.Meta.model
+server.serializers.UserProfileSerializer.Meta.model
+server.serializers.UserSerializer.Meta.model
+server.serializers.VenueSerializer.Meta.model" class="py-name" href="#" onclick="return doclink('link-29', 'model', 'link-18');">model</a></tt> <tt class="py-op">=</tt> <tt class="py-name">User</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">                <tt id="link-30" class="py-name"><a title="server.serializers.GangSerializer.Meta.fields
+server.serializers.MessageSerializer.Meta.fields
+server.serializers.UserProfileSerializer.Meta.fields
+server.serializers.UserSerializer.Meta.fields
+server.serializers.VenueSerializer.Meta.fields" class="py-name" href="#" onclick="return doclink('link-30', 'fields', 'link-20');">fields</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'id'</tt><tt class="py-op">,</tt> <tt class="py-string">'username'</tt><tt class="py-op">,</tt> <tt class="py-string">'password'</tt><tt class="py-op">,</tt> <tt class="py-string">'email'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line"> </tt>
+<a name="UserSerializer.restore_object"></a><div id="UserSerializer.restore_object-def"><a name="L43"></a><tt class="py-lineno">43</tt> <a class="py-toggle" href="#" id="UserSerializer.restore_object-toggle" onclick="return toggle('UserSerializer.restore_object');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="server.serializers.UserSerializer-class.html#restore_object">restore_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">attrs</tt><tt class="py-op">,</tt> <tt class="py-param">instance</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserSerializer.restore_object-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="UserSerializer.restore_object-expanded"><a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">                <tt id="link-31" class="py-name" targets="Variable server.models.UserProfile.user=server.models.UserProfile-class.html#user"><a title="server.models.UserProfile.user" class="py-name" href="#" onclick="return doclink('link-31', 'user', 'link-31');">user</a></tt> <tt class="py-op">=</tt> <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-32" class="py-name" targets="Class server.serializers.UserSerializer=server.serializers.UserSerializer-class.html"><a title="server.serializers.UserSerializer" class="py-name" href="#" onclick="return doclink('link-32', 'UserSerializer', 'link-32');">UserSerializer</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Method server.serializers.UserSerializer.restore_object()=server.serializers.UserSerializer-class.html#restore_object"><a title="server.serializers.UserSerializer.restore_object" class="py-name" href="#" onclick="return doclink('link-33', 'restore_object', 'link-33');">restore_object</a></tt><tt class="py-op">(</tt><tt class="py-name">attrs</tt><tt class="py-op">,</tt> <tt class="py-name">instance</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">                <tt id="link-34" class="py-name"><a title="server.models.UserProfile.user" class="py-name" href="#" onclick="return doclink('link-34', 'user', 'link-31');">user</a></tt><tt class="py-op">.</tt><tt class="py-name">set_password</tt><tt class="py-op">(</tt><tt class="py-name">attrs</tt><tt class="py-op">[</tt><tt class="py-string">'password'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-35" class="py-name"><a title="server.models.UserProfile.user" class="py-name" href="#" onclick="return doclink('link-35', 'user', 'link-31');">user</a></tt> </tt>
+</div><a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line"> </tt>
+<a name="UserSerializer.to_native"></a><div id="UserSerializer.to_native-def"><a name="L48"></a><tt class="py-lineno">48</tt> <a class="py-toggle" href="#" id="UserSerializer.to_native-toggle" onclick="return toggle('UserSerializer.to_native');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="server.serializers.UserSerializer-class.html#to_native">to_native</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserSerializer.to_native-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="UserSerializer.to_native-expanded"><a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">                <tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-36" class="py-name"><a title="server.serializers.UserSerializer" class="py-name" href="#" onclick="return doclink('link-36', 'UserSerializer', 'link-32');">UserSerializer</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method server.serializers.UserSerializer.to_native()=server.serializers.UserSerializer-class.html#to_native"><a title="server.serializers.UserSerializer.to_native" class="py-name" href="#" onclick="return doclink('link-37', 'to_native', 'link-37');">to_native</a></tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">                <tt class="py-keyword">del</tt> <tt class="py-name">ret</tt><tt class="py-op">[</tt><tt class="py-string">'password'</tt><tt class="py-op">]</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">ret</tt> </tt>
+</div></div><a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"> </tt>
+<a name="VenueSerializer"></a><div id="VenueSerializer-def"><a name="L54"></a><tt class="py-lineno">54</tt> <a class="py-toggle" href="#" id="VenueSerializer-toggle" onclick="return toggle('VenueSerializer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.VenueSerializer-class.html">VenueSerializer</a><tt class="py-op">(</tt><tt class="py-base-class">serializers</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelSerializer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="VenueSerializer-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="VenueSerializer-expanded"><a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">        <tt class="py-comment">#TODO: Properly use depth for compiling these fields</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">        <tt id="link-38" class="py-name" targets="Variable server.models.UserProfile.gang=server.models.UserProfile-class.html#gang,Variable server.models.Venue.gang=server.models.Venue-class.html#gang,Variable server.serializers.VenueSerializer.gang=server.serializers.VenueSerializer-class.html#gang"><a title="server.models.UserProfile.gang
+server.models.Venue.gang
+server.serializers.VenueSerializer.gang" class="py-name" href="#" onclick="return doclink('link-38', 'gang', 'link-38');">gang</a></tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-39', 'serializers', 'link-0');">serializers</a></tt><tt class="py-op">.</tt><tt class="py-name">Field</tt><tt class="py-op">(</tt><tt class="py-name">source</tt><tt class="py-op">=</tt><tt class="py-string">'gangster.gang'</tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"> </tt>
+<a name="VenueSerializer.Meta"></a><div id="VenueSerializer.Meta-def"><a name="L59"></a><tt class="py-lineno">59</tt> <a class="py-toggle" href="#" id="VenueSerializer.Meta-toggle" onclick="return toggle('VenueSerializer.Meta');">-</a><tt class="py-line">        <tt class="py-keyword">class</tt> <a class="py-def-name" href="server.serializers.VenueSerializer.Meta-class.html">Meta</a><tt class="py-op">:</tt> </tt>
+</div><div id="VenueSerializer.Meta-collapsed" style="display:none;" pad="++" indent="++++++++++++"></div><div id="VenueSerializer.Meta-expanded"><a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">                <tt id="link-40" class="py-name"><a title="server.serializers.GangSerializer.Meta.model
+server.serializers.MessageSerializer.Meta.model
+server.serializers.UserProfileSerializer.Meta.model
+server.serializers.UserSerializer.Meta.model
+server.serializers.VenueSerializer.Meta.model" class="py-name" href="#" onclick="return doclink('link-40', 'model', 'link-18');">model</a></tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="server.models.Venue" class="py-name" href="#" onclick="return doclink('link-41', 'Venue', 'link-3');">Venue</a></tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">                <tt id="link-42" class="py-name"><a title="server.serializers.GangSerializer.Meta.fields
+server.serializers.MessageSerializer.Meta.fields
+server.serializers.UserProfileSerializer.Meta.fields
+server.serializers.UserSerializer.Meta.fields
+server.serializers.VenueSerializer.Meta.fields" class="py-name" href="#" onclick="return doclink('link-42', 'fields', 'link-20');">fields</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'id'</tt><tt class="py-op">,</tt> <tt class="py-string">'name'</tt><tt class="py-op">,</tt> <tt class="py-string">'gangster'</tt><tt class="py-op">,</tt> <tt class="py-string">'gangsterSpraying'</tt><tt class="py-op">,</tt> <tt class="py-string">'gang'</tt><tt class="py-op">,</tt> <tt class="py-string">'latitude'</tt><tt class="py-op">,</tt> <tt class="py-string">'longitude'</tt><tt class="py-op">,</tt> <tt class="py-string">'latestEditTimestamp'</tt><tt class="py-op">,</tt> <tt class="py-string">'category'</tt><tt class="py-op">,</tt> <tt class="py-string">'sprayinginitialized'</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="server-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Jun 23 14:41:01 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

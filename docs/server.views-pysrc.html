@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>server.views</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="server-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="server-module.html">Package&nbsp;server</a> ::
+        Module&nbsp;views
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="server.views-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="server.views-module.html">Module server.views</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#Base</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">rest_framework</tt> <tt class="py-keyword">import</tt> <tt class="py-name">viewsets</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">rest_framework</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Module server.views=server.views-module.html"><a title="server.views" class="py-name" href="#" onclick="return doclink('link-0', 'views', 'link-0');">views</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">APIView</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">rest_framework</tt><tt class="py-op">.</tt><tt class="py-name">response</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Response</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">rest_framework</tt> <tt class="py-keyword">import</tt> <tt class="py-name">status</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">utils</tt> <tt class="py-keyword">import</tt> <tt class="py-name">timezone</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">datetime</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">time</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">urllib2</tt><tt class="py-op">,</tt> <tt class="py-name">urllib</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">hashlib</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">json</tt><tt class="py-op">,</tt> <tt class="py-name">uuid</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt><tt class="py-op">,</tt> <tt class="py-name">base64</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">math</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment">#Authentication and Permissions</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">rest_framework</tt><tt class="py-op">.</tt><tt class="py-name">permissions</tt> <tt class="py-keyword">import</tt> <tt class="py-name">IsAuthenticated</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">rest_framework</tt><tt class="py-op">.</tt><tt class="py-name">authentication</tt> <tt class="py-keyword">import</tt> <tt class="py-name">SessionAuthentication</tt><tt class="py-op">,</tt> <tt class="py-name">BasicAuthentication</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment">#Models</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package server=server-module.html"><a title="server" class="py-name" href="#" onclick="return doclink('link-1', 'server', 'link-1');">server</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module server.models=server.models-module.html"><a title="server.models" class="py-name" href="#" onclick="return doclink('link-2', 'models', 'link-2');">models</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class server.models.Venue=server.models.Venue-class.html"><a title="server.models.Venue" class="py-name" href="#" onclick="return doclink('link-3', 'Venue', 'link-3');">Venue</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Class server.models.UserProfile=server.models.UserProfile-class.html"><a title="server.models.UserProfile" class="py-name" href="#" onclick="return doclink('link-4', 'UserProfile', 'link-4');">UserProfile</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Class server.models.Gang=server.models.Gang-class.html"><a title="server.models.Gang" class="py-name" href="#" onclick="return doclink('link-5', 'Gang', 'link-5');">Gang</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Class server.models.Message=server.models.Message-class.html"><a title="server.models.Message" class="py-name" href="#" onclick="return doclink('link-6', 'Message', 'link-6');">Message</a></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">contrib</tt><tt class="py-op">.</tt><tt class="py-name">auth</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="server.models" class="py-name" href="#" onclick="return doclink('link-7', 'models', 'link-2');">models</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">User</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-comment">#Serializers</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="server" class="py-name" href="#" onclick="return doclink('link-8', 'server', 'link-1');">server</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module server.serializers=server.serializers-module.html"><a title="server.serializers" class="py-name" href="#" onclick="return doclink('link-9', 'serializers', 'link-9');">serializers</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name" targets="Class server.serializers.VenueSerializer=server.serializers.VenueSerializer-class.html"><a title="server.serializers.VenueSerializer" class="py-name" href="#" onclick="return doclink('link-10', 'VenueSerializer', 'link-10');">VenueSerializer</a></tt><tt class="py-op">,</tt> <tt id="link-11" class="py-name" targets="Class server.serializers.UserProfileSerializer=server.serializers.UserProfileSerializer-class.html"><a title="server.serializers.UserProfileSerializer" class="py-name" href="#" onclick="return doclink('link-11', 'UserProfileSerializer', 'link-11');">UserProfileSerializer</a></tt><tt class="py-op">,</tt> <tt id="link-12" class="py-name" targets="Class server.serializers.GangSerializer=server.serializers.GangSerializer-class.html"><a title="server.serializers.GangSerializer" class="py-name" href="#" onclick="return doclink('link-12', 'GangSerializer', 'link-12');">GangSerializer</a></tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name" targets="Class server.serializers.UserSerializer=server.serializers.UserSerializer-class.html"><a title="server.serializers.UserSerializer" class="py-name" href="#" onclick="return doclink('link-13', 'UserSerializer', 'link-13');">UserSerializer</a></tt><tt class="py-op">,</tt> <tt id="link-14" class="py-name" targets="Class server.serializers.MessageSerializer=server.serializers.MessageSerializer-class.html"><a title="server.serializers.MessageSerializer" class="py-name" href="#" onclick="return doclink('link-14', 'MessageSerializer', 'link-14');">MessageSerializer</a></tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">http</tt> <tt class="py-keyword">import</tt> <tt class="py-name">HttpResponse</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="VenueViewSet"></a><div id="VenueViewSet-def"><a name="L29"></a><tt class="py-lineno"> 29</tt> <a class="py-toggle" href="#" id="VenueViewSet-toggle" onclick="return toggle('VenueViewSet');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.views.VenueViewSet-class.html">VenueViewSet</a><tt class="py-op">(</tt><tt class="py-base-class">viewsets</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelViewSet</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="VenueViewSet-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="VenueViewSet-expanded"><a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt id="link-15" class="py-name" targets="Variable server.views.GangViewSet.authentication_classes=server.views.GangViewSet-class.html#authentication_classes,Variable server.views.MessageViewSet.authentication_classes=server.views.MessageViewSet-class.html#authentication_classes,Variable server.views.UserProfileViewSet.authentication_classes=server.views.UserProfileViewSet-class.html#authentication_classes,Variable server.views.UserViewSet.authentication_classes=server.views.UserViewSet-class.html#authentication_classes,Variable server.views.VenueViewSet.authentication_classes=server.views.VenueViewSet-class.html#authentication_classes"><a title="server.views.GangViewSet.authentication_classes
+server.views.MessageViewSet.authentication_classes
+server.views.UserProfileViewSet.authentication_classes
+server.views.UserViewSet.authentication_classes
+server.views.VenueViewSet.authentication_classes" class="py-name" href="#" onclick="return doclink('link-15', 'authentication_classes', 'link-15');">authentication_classes</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">SessionAuthentication</tt><tt class="py-op">,</tt> <tt class="py-name">BasicAuthentication</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-comment">#       permission_classes = (IsAuthenticated,)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt id="link-16" class="py-name" targets="Variable server.views.GangViewSet.queryset=server.views.GangViewSet-class.html#queryset,Variable server.views.MessageViewSet.queryset=server.views.MessageViewSet-class.html#queryset,Variable server.views.UserProfileViewSet.queryset=server.views.UserProfileViewSet-class.html#queryset,Variable server.views.UserViewSet.queryset=server.views.UserViewSet-class.html#queryset,Variable server.views.VenueViewSet.queryset=server.views.VenueViewSet-class.html#queryset"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-16', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="server.models.Venue" class="py-name" href="#" onclick="return doclink('link-17', 'Venue', 'link-3');">Venue</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt id="link-18" class="py-name" targets="Variable server.views.GangViewSet.serializer_class=server.views.GangViewSet-class.html#serializer_class,Variable server.views.MessageViewSet.serializer_class=server.views.MessageViewSet-class.html#serializer_class,Variable server.views.UserProfileViewSet.serializer_class=server.views.UserProfileViewSet-class.html#serializer_class,Variable server.views.UserViewSet.serializer_class=server.views.UserViewSet-class.html#serializer_class,Variable server.views.VenueViewSet.serializer_class=server.views.VenueViewSet-class.html#serializer_class"><a title="server.views.GangViewSet.serializer_class
+server.views.MessageViewSet.serializer_class
+server.views.UserProfileViewSet.serializer_class
+server.views.UserViewSet.serializer_class
+server.views.VenueViewSet.serializer_class" class="py-name" href="#" onclick="return doclink('link-18', 'serializer_class', 'link-18');">serializer_class</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="server.serializers.VenueSerializer" class="py-name" href="#" onclick="return doclink('link-19', 'VenueSerializer', 'link-10');">VenueSerializer</a></tt> </tt>
+</div><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="getHeatMapData"></a><div id="getHeatMapData-def"><a name="L35"></a><tt class="py-lineno"> 35</tt> <a class="py-toggle" href="#" id="getHeatMapData-toggle" onclick="return toggle('getHeatMapData');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="server.views-module.html#getHeatMapData">getHeatMapData</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">event</tt><tt class="py-op">,</tt> <tt class="py-param">timestamp</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="getHeatMapData-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="getHeatMapData-expanded"><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-docstring">"""This function gets data from GameAnalytics to be used in our HeatMap.html</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">        :param request: request object.</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">        :param event: eventID passed in url</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">        :param timestamp: number or letter to demonstrate what data is fetched from GameAnalyrics. (a = all, 1 = 1st day and so on..)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">        :returns: Response from GA server, if everything went well its a JSON message.</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-20" class="py-name" targets="Variable server.models.Message.timestamp=server.models.Message-class.html#timestamp"><a title="server.models.Message.timestamp" class="py-name" href="#" onclick="return doclink('link-20', 'timestamp', 'link-20');">timestamp</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'a'</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">                <tt class="py-name">start</tt> <tt class="py-op">=</tt> <tt class="py-number">1400310219</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">                <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-number">1400609019</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-21" class="py-name"><a title="server.models.Message.timestamp" class="py-name" href="#" onclick="return doclink('link-21', 'timestamp', 'link-20');">timestamp</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'1'</tt><tt class="py-op">:</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">                <tt class="py-name">start</tt> <tt class="py-op">=</tt> <tt class="py-number">1400310219</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">                <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-number">1400389200</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-22" class="py-name"><a title="server.models.Message.timestamp" class="py-name" href="#" onclick="return doclink('link-22', 'timestamp', 'link-20');">timestamp</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'2'</tt><tt class="py-op">:</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">                <tt class="py-name">start</tt> <tt class="py-op">=</tt> <tt class="py-number">1400371200</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-number">1400475600</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-23" class="py-name"><a title="server.models.Message.timestamp" class="py-name" href="#" onclick="return doclink('link-23', 'timestamp', 'link-20');">timestamp</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'3'</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                <tt class="py-name">start</tt> <tt class="py-op">=</tt> <tt class="py-number">1400457600</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-number">1400562000</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-24" class="py-name"><a title="server.models.Message.timestamp" class="py-name" href="#" onclick="return doclink('link-24', 'timestamp', 'link-20');">timestamp</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'4'</tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                <tt class="py-name">start</tt> <tt class="py-op">=</tt> <tt class="py-number">1400623200</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">                <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-number">1400652000</tt>         </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-name">end</tt> <tt class="py-op">=</tt> <tt class="py-name">round</tt><tt class="py-op">(</tt><tt class="py-name">end</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">start</tt><tt class="py-op">,</tt> <tt class="py-name">end</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">         </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">mac</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-string">'{:02x}'</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">uuid</tt><tt class="py-op">.</tt><tt class="py-name">getnode</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;&gt;</tt> <tt class="py-name">i</tt><tt class="py-op">)</tt> <tt class="py-op">&amp;</tt> <tt class="py-number">0xff</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt><tt class="py-number">8</tt><tt class="py-op">*</tt><tt class="py-number">6</tt><tt class="py-op">,</tt><tt class="py-number">8</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">        <tt class="py-name">mac</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">mac</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">hashlib</tt><tt class="py-op">.</tt><tt class="py-name">sha1</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-name">m</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">mac</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-name">user_id</tt> <tt class="py-op">=</tt> <tt class="py-name">m</tt><tt class="py-op">.</tt><tt class="py-name">hexdigest</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">game_key</tt> <tt class="py-op">=</tt> <tt class="py-string">'f58c639185081f602fee6f6b725349b7'</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt class="py-name">api_key</tt> <tt class="py-op">=</tt> <tt class="py-string">"3e2ca2703b96e4a27c3ccf450da9a9ba29946237"</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-name">secret_key</tt> <tt class="py-op">=</tt> <tt class="py-string">'10d560a88e6b0050f8a42a60e806f5fc909f9ad3'</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">         </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-name">url</tt> <tt class="py-op">=</tt> <tt class="py-string">'http://data-api.gameanalytics.com/heatmap/?'</tt>      </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">         </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">encoding</tt> <tt class="py-op">=</tt> <tt class="py-name">urllib</tt><tt class="py-op">.</tt><tt class="py-name">urlencode</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-string">'game_key'</tt><tt class="py-op">,</tt><tt class="py-name">game_key</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-string">'event_ids'</tt><tt class="py-op">,</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">event</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-string">'area'</tt><tt class="py-op">,</tt><tt class="py-string">'Oulu3D'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-string">'start_ts'</tt><tt class="py-op">,</tt><tt class="py-name">start</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-string">'end_ts'</tt><tt class="py-op">,</tt><tt class="py-name">end</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">         </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-name">digest</tt> <tt class="py-op">=</tt> <tt class="py-name">hashlib</tt><tt class="py-op">.</tt><tt class="py-name">md5</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-name">digest</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">encoding</tt><tt class="py-op">)</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">digest</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">api_key</tt><tt class="py-op">)</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">         </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">json_authorization</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'Authorization'</tt> <tt class="py-op">:</tt> <tt class="py-name">digest</tt><tt class="py-op">.</tt><tt class="py-name">hexdigest</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">}</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-name">request</tt> <tt class="py-op">=</tt> <tt class="py-name">urllib2</tt><tt class="py-op">.</tt><tt class="py-name">Request</tt><tt class="py-op">(</tt><tt class="py-name">url</tt><tt class="py-op">+</tt><tt class="py-name">encoding</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-name">json_authorization</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">encoding</tt>  </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-name">response</tt> <tt class="py-op">=</tt> <tt class="py-name">urllib2</tt><tt class="py-op">.</tt><tt class="py-name">urlopen</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">         </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">         </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-name">r</tt> <tt class="py-op">=</tt> <tt class="py-name">HttpResponse</tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">.</tt><tt class="py-name">read</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt>         </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">r</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">HttpResponse</tt><tt class="py-op">(</tt><tt class="py-name">r</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-comment">#Playerinfo can be the name of player or gang name of player, depending on the event.</tt> </tt>
+<a name="eventHappened"></a><div id="eventHappened-def"><a name="L92"></a><tt class="py-lineno"> 92</tt> <a class="py-toggle" href="#" id="eventHappened-toggle" onclick="return toggle('eventHappened');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="server.views-module.html#eventHappened">eventHappened</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">eventId</tt><tt class="py-op">,</tt> <tt class="py-param">playername</tt><tt class="py-op">,</tt> <tt class="py-param">playerpos</tt><tt class="py-op">,</tt> <tt class="py-param">playerinfo</tt><tt class="py-op">,</tt> <tt class="py-param">playerdata</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="eventHappened-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="eventHappened-expanded"><a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-docstring">"""This function is launched when we want to send information from realXtend to GameAnalytics, since REX does not support Patch or Post atm I have made this middleserver functionality to Django. </tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">        :param request: request body.</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring">        :param eventId: id of the event we want to handle. Will be checked lower on, for example eventId 1 = Spray, 2 = policebust and so on. Check if structure.</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">        :param playername: Name of the player in case needed, atm not used.</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">        :param playerpos: String of playerpositions separated with , / %2C. Split from string into separate variables and then multiplied by 1000000, because GameAnalytics does not support huge ints. (Has to be divided when gotten later)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">        :param playerinfo: Some extra information about player, playername or player gang for example. Usually players gang here. </tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">        :param playerdata: Player id made in realXtend or in this script. Is unique.</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">        :returns: html body about succesfull event.</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">                 </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-name">game_key</tt> <tt class="py-op">=</tt> <tt class="py-string">'f58c639185081f602fee6f6b725349b7'</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-name">secret_key</tt> <tt class="py-op">=</tt> <tt class="py-string">'10d560a88e6b0050f8a42a60e806f5fc909f9ad3'</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-name">endpoint_url</tt> <tt class="py-op">=</tt> <tt class="py-string">'http://api.gameanalytics.com/1'</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">         </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-name">mac</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-string">'{:02x}'</tt><tt class="py-op">.</tt><tt class="py-name">format</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">uuid</tt><tt class="py-op">.</tt><tt class="py-name">getnode</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;&gt;</tt> <tt class="py-name">i</tt><tt class="py-op">)</tt> <tt class="py-op">&amp;</tt> <tt class="py-number">0xff</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">i</tt> <tt class="py-keyword">in</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt><tt class="py-number">8</tt><tt class="py-op">*</tt><tt class="py-number">6</tt><tt class="py-op">,</tt><tt class="py-number">8</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-name">mac</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">x</tt> <tt class="py-keyword">in</tt> <tt class="py-name">mac</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">         </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-name">m</tt> <tt class="py-op">=</tt> <tt class="py-name">hashlib</tt><tt class="py-op">.</tt><tt class="py-name">sha1</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-name">m</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">mac</tt><tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-name">user_id</tt> <tt class="py-op">=</tt> <tt class="py-name">m</tt><tt class="py-op">.</tt><tt class="py-name">hexdigest</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">upper</tt><tt class="py-op">(</tt><tt class="py-op">)</tt>  </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">         </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt id="link-25" class="py-name" targets="Variable server.models.Venue.category=server.models.Venue-class.html#category"><a title="server.models.Venue.category" class="py-name" href="#" onclick="return doclink('link-25', 'category', 'link-25');">category</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'design'</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">         </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-name">message</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-name">eventId</tt> <tt class="py-op">=</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">eventId</tt><tt class="py-op">)</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">         </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-comment">#req fields</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">eventId</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"event_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"spray:"</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerinfo</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">eventId</tt> <tt class="py-op">==</tt> <tt class="py-number">2</tt><tt class="py-op">:</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"event_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"policebust:"</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerinfo</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">eventId</tt> <tt class="py-op">==</tt> <tt class="py-number">3</tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"event_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"playerbust:"</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerinfo</tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">eventId</tt> <tt class="py-op">==</tt> <tt class="py-number">4</tt><tt class="py-op">:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"event_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"rexLogin:"</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerinfo</tt><tt class="py-op">)</tt>      </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">eventId</tt> <tt class="py-op">==</tt> <tt class="py-number">5</tt><tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"event_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"rexLogout:"</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerinfo</tt><tt class="py-op">)</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">eventId</tt> <tt class="py-op">==</tt> <tt class="py-number">6</tt><tt class="py-op">:</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"event_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"watcherOnSpray:"</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerinfo</tt><tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">eventId</tt> <tt class="py-op">==</tt> <tt class="py-number">7</tt><tt class="py-op">:</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"event_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"watcherOnPoliceBust:"</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerinfo</tt><tt class="py-op">)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">eventId</tt> <tt class="py-op">==</tt> <tt class="py-number">8</tt><tt class="py-op">:</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"event_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"policeInfoOnBust:"</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerinfo</tt><tt class="py-op">)</tt>      </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">         </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"user_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">user_id</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">eventId</tt> <tt class="py-op">!=</tt> <tt class="py-number">4</tt> <tt class="py-keyword">and</tt> <tt class="py-name">eventId</tt> <tt class="py-op">!=</tt> <tt class="py-number">5</tt> <tt class="py-keyword">and</tt> <tt class="py-name">eventId</tt> <tt class="py-op">!=</tt> <tt class="py-number">6</tt> <tt class="py-keyword">and</tt> <tt class="py-name">eventId</tt> <tt class="py-op">!=</tt> <tt class="py-number">7</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"session_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">base64</tt><tt class="py-op">.</tt><tt class="py-name">b64encode</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">urandom</tt><tt class="py-op">(</tt><tt class="py-number">16</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"session_id"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">playerdata</tt><tt class="py-op">)</tt>  </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"build"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"1.0a"</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">"area"</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"Oulu3D"</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">         </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">eventId</tt> <tt class="py-op">!=</tt> <tt class="py-number">4</tt> <tt class="py-keyword">and</tt> <tt class="py-name">eventId</tt> <tt class="py-op">!=</tt> <tt class="py-number">5</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">                <tt class="py-name">playerposi</tt> <tt class="py-op">=</tt> <tt class="py-name">playerpos</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'%2C'</tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">                <tt class="py-comment">#Add multiplier because GA server makes values to int.</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">'x'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">math</tt><tt class="py-op">.</tt><tt class="py-name">modf</tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">playerposi</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">*</tt> <tt class="py-number">1000000</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">'y'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">playerposi</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">                <tt class="py-name">message</tt><tt class="py-op">[</tt><tt class="py-string">'z'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">math</tt><tt class="py-op">.</tt><tt class="py-name">modf</tt><tt class="py-op">(</tt><tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">playerposi</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">*</tt> <tt class="py-number">1000000</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt>      </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">         </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">         </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">message</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-name">json_message</tt> <tt class="py-op">=</tt> <tt class="py-name">json</tt><tt class="py-op">.</tt><tt class="py-name">dumps</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">        <tt class="py-name">digest</tt> <tt class="py-op">=</tt> <tt class="py-name">hashlib</tt><tt class="py-op">.</tt><tt class="py-name">md5</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-name">digest</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">json_message</tt><tt class="py-op">)</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-name">digest</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">secret_key</tt><tt class="py-op">)</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">        <tt class="py-name">json_authorization</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'Authorization'</tt> <tt class="py-op">:</tt> <tt class="py-name">digest</tt><tt class="py-op">.</tt><tt class="py-name">hexdigest</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">}</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">        <tt class="py-name">url</tt> <tt class="py-op">=</tt> <tt class="py-string">"%s/%s/%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">endpoint_url</tt><tt class="py-op">,</tt> <tt class="py-name">game_key</tt><tt class="py-op">,</tt> <tt id="link-26" class="py-name"><a title="server.models.Venue.category" class="py-name" href="#" onclick="return doclink('link-26', 'category', 'link-25');">category</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt class="py-name">request</tt> <tt class="py-op">=</tt> <tt class="py-name">urllib2</tt><tt class="py-op">.</tt><tt class="py-name">Request</tt><tt class="py-op">(</tt><tt class="py-name">url</tt><tt class="py-op">,</tt> <tt class="py-name">json_message</tt><tt class="py-op">,</tt> <tt class="py-name">json_authorization</tt><tt class="py-op">)</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">                 </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-name">response</tt> <tt class="py-op">=</tt> <tt class="py-name">urllib2</tt><tt class="py-op">.</tt><tt class="py-name">urlopen</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">)</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">response</tt><tt class="py-op">.</tt><tt class="py-name">read</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">   </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">HttpResponse</tt><tt class="py-op">(</tt><tt class="py-string">'&lt;html&gt;&lt;body&gt;Event sent!&lt;/body&gt;&lt;/html&gt;'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"> </tt>
+<a name="policeBust"></a><div id="policeBust-def"><a name="L170"></a><tt class="py-lineno">170</tt> <a class="py-toggle" href="#" id="policeBust-toggle" onclick="return toggle('policeBust');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="server.views-module.html#policeBust">policeBust</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">gangsterId</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="policeBust-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="policeBust-expanded"><a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt class="py-docstring">"""Function to handle policebust events from realXtend, because reX cannot do other than GET events I have made this function to our Django to work as middle server.</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt class="py-docstring">        Function basically manipulates our MySQL database straight from here.</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"><tt class="py-docstring">        :param request: Request body, not used atm.</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-docstring">        :param gangsterId: Id of the gangster whose points we wanna lower, since he was busted.</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring">        :returns: http body of a succesful event.</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">        <tt id="link-27" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-27', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="server.models.UserProfile" class="py-name" href="#" onclick="return doclink('link-28', 'UserProfile', 'link-4');">UserProfile</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method server.views.UserAuthView.get()=server.views.UserAuthView-class.html#get"><a title="server.views.UserAuthView.get" class="py-name" href="#" onclick="return doclink('link-29', 'get', 'link-29');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">pk</tt><tt class="py-op">=</tt><tt class="py-name">gangsterId</tt><tt class="py-op">)</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">        <tt id="link-30" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-30', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Variable server.models.UserProfile.bustedviapolice=server.models.UserProfile-class.html#bustedviapolice"><a title="server.models.UserProfile.bustedviapolice" class="py-name" href="#" onclick="return doclink('link-31', 'bustedviapolice', 'link-31');">bustedviapolice</a></tt> <tt class="py-op">=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">        <tt id="link-32" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-32', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Variable server.models.UserProfile.busted=server.models.UserProfile-class.html#busted"><a title="server.models.UserProfile.busted" class="py-name" href="#" onclick="return doclink('link-33', 'busted', 'link-33');">busted</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-34', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="server.models.UserProfile.busted" class="py-name" href="#" onclick="return doclink('link-35', 'busted', 'link-33');">busted</a></tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">        <tt id="link-36" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-36', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Variable server.models.UserProfile.points=server.models.UserProfile-class.html#points"><a title="server.models.UserProfile.points" class="py-name" href="#" onclick="return doclink('link-37', 'points', 'link-37');">points</a></tt> <tt class="py-op">=</tt> <tt id="link-38" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-38', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="server.models.UserProfile.points" class="py-name" href="#" onclick="return doclink('link-39', 'points', 'link-37');">points</a></tt> <tt class="py-op">-</tt> <tt class="py-number">30</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt id="link-40" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-40', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">HttpResponse</tt><tt class="py-op">(</tt><tt class="py-string">'&lt;html&gt;&lt;body&gt;Jes %s&lt;/body&gt;&lt;/html&gt;'</tt> <tt class="py-op">%</tt> <tt id="link-41" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-41', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt>
+<a name="MessageViewSet"></a><div id="MessageViewSet-def"><a name="L185"></a><tt class="py-lineno">185</tt> <a class="py-toggle" href="#" id="MessageViewSet-toggle" onclick="return toggle('MessageViewSet');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.views.MessageViewSet-class.html">MessageViewSet</a><tt class="py-op">(</tt><tt class="py-base-class">viewsets</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelViewSet</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MessageViewSet-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="MessageViewSet-expanded"><a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">        <tt id="link-42" class="py-name"><a title="server.views.GangViewSet.authentication_classes
+server.views.MessageViewSet.authentication_classes
+server.views.UserProfileViewSet.authentication_classes
+server.views.UserViewSet.authentication_classes
+server.views.VenueViewSet.authentication_classes" class="py-name" href="#" onclick="return doclink('link-42', 'authentication_classes', 'link-15');">authentication_classes</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">SessionAuthentication</tt><tt class="py-op">,</tt> <tt class="py-name">BasicAuthentication</tt><tt class="py-op">)</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-comment">#       permission_classes = (IsAuthenticated,)</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">        <tt id="link-43" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-43', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-44" class="py-name"><a title="server.models.Message" class="py-name" href="#" onclick="return doclink('link-44', 'Message', 'link-6');">Message</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">        <tt id="link-45" class="py-name"><a title="server.views.GangViewSet.serializer_class
+server.views.MessageViewSet.serializer_class
+server.views.UserProfileViewSet.serializer_class
+server.views.UserViewSet.serializer_class
+server.views.VenueViewSet.serializer_class" class="py-name" href="#" onclick="return doclink('link-45', 'serializer_class', 'link-18');">serializer_class</a></tt> <tt class="py-op">=</tt> <tt id="link-46" class="py-name"><a title="server.serializers.MessageSerializer" class="py-name" href="#" onclick="return doclink('link-46', 'MessageSerializer', 'link-14');">MessageSerializer</a></tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"> </tt>
+<a name="MessageViewSet.get_queryset"></a><div id="MessageViewSet.get_queryset-def"><a name="L192"></a><tt class="py-lineno">192</tt> <a class="py-toggle" href="#" id="MessageViewSet.get_queryset-toggle" onclick="return toggle('MessageViewSet.get_queryset');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="server.views.MessageViewSet-class.html#get_queryset">get_queryset</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MessageViewSet.get_queryset-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="MessageViewSet.get_queryset-expanded"><a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring">                Act according to the query paramethers in the get request</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">                <tt id="link-47" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-47', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-48" class="py-name"><a title="server.models.Message" class="py-name" href="#" onclick="return doclink('link-48', 'Message', 'link-6');">Message</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">                <tt id="link-49" class="py-name" targets="Variable server.models.UserProfile.gang=server.models.UserProfile-class.html#gang,Variable server.models.Venue.gang=server.models.Venue-class.html#gang,Variable server.serializers.VenueSerializer.gang=server.serializers.VenueSerializer-class.html#gang"><a title="server.models.UserProfile.gang
+server.models.Venue.gang
+server.serializers.VenueSerializer.gang" class="py-name" href="#" onclick="return doclink('link-49', 'gang', 'link-49');">gang</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">QUERY_PARAMS</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="server.views.UserAuthView.get" class="py-name" href="#" onclick="return doclink('link-50', 'get', 'link-29');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'gang'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt id="link-51" class="py-name"><a title="server.models.UserProfile.gang
+server.models.Venue.gang
+server.serializers.VenueSerializer.gang" class="py-name" href="#" onclick="return doclink('link-51', 'gang', 'link-49');">gang</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">                        <tt id="link-52" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-52', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-53" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-53', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">.</tt><tt class="py-name">filter</tt><tt class="py-op">(</tt><tt class="py-name">gangster__gang</tt><tt class="py-op">=</tt><tt id="link-54" class="py-name"><a title="server.models.UserProfile.gang
+server.models.Venue.gang
+server.serializers.VenueSerializer.gang" class="py-name" href="#" onclick="return doclink('link-54', 'gang', 'link-49');">gang</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">                <tt class="py-comment">#This must be the last slice taken on the queryset.</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">                <tt class="py-name">limit</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">QUERY_PARAMS</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="server.views.UserAuthView.get" class="py-name" href="#" onclick="return doclink('link-55', 'get', 'link-29');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'limit'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">limit</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">                        <tt id="link-56" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-56', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-57" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-57', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">limit</tt><tt class="py-op">]</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-58" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-58', 'queryset', 'link-16');">queryset</a></tt> </tt>
+</div></div><a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"> </tt>
+<a name="UserProfileViewSet"></a><div id="UserProfileViewSet-def"><a name="L209"></a><tt class="py-lineno">209</tt> <a class="py-toggle" href="#" id="UserProfileViewSet-toggle" onclick="return toggle('UserProfileViewSet');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.views.UserProfileViewSet-class.html">UserProfileViewSet</a><tt class="py-op">(</tt><tt class="py-base-class">viewsets</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelViewSet</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserProfileViewSet-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="UserProfileViewSet-expanded"><a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">        <tt id="link-59" class="py-name"><a title="server.views.GangViewSet.authentication_classes
+server.views.MessageViewSet.authentication_classes
+server.views.UserProfileViewSet.authentication_classes
+server.views.UserViewSet.authentication_classes
+server.views.VenueViewSet.authentication_classes" class="py-name" href="#" onclick="return doclink('link-59', 'authentication_classes', 'link-15');">authentication_classes</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">SessionAuthentication</tt><tt class="py-op">,</tt> <tt class="py-name">BasicAuthentication</tt><tt class="py-op">)</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-comment">#       permission_classes = (IsAuthenticated,)</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">        <tt id="link-60" class="py-name"><a title="server.views.GangViewSet.serializer_class
+server.views.MessageViewSet.serializer_class
+server.views.UserProfileViewSet.serializer_class
+server.views.UserViewSet.serializer_class
+server.views.VenueViewSet.serializer_class" class="py-name" href="#" onclick="return doclink('link-60', 'serializer_class', 'link-18');">serializer_class</a></tt> <tt class="py-op">=</tt> <tt id="link-61" class="py-name"><a title="server.serializers.UserProfileSerializer" class="py-name" href="#" onclick="return doclink('link-61', 'UserProfileSerializer', 'link-11');">UserProfileSerializer</a></tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">        <tt id="link-62" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-62', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-63" class="py-name"><a title="server.models.UserProfile" class="py-name" href="#" onclick="return doclink('link-63', 'UserProfile', 'link-4');">UserProfile</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">         </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">         </tt>
+<a name="UserProfileViewSet.get_queryset"></a><div id="UserProfileViewSet.get_queryset-def"><a name="L217"></a><tt class="py-lineno">217</tt> <a class="py-toggle" href="#" id="UserProfileViewSet.get_queryset-toggle" onclick="return toggle('UserProfileViewSet.get_queryset');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="server.views.UserProfileViewSet-class.html#get_queryset">get_queryset</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserProfileViewSet.get_queryset-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UserProfileViewSet.get_queryset-expanded"><a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">                <tt class="py-docstring">"""</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line"><tt class="py-docstring">                Optionally restricts the returned profiles.</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"><tt class="py-docstring">                """</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">                <tt id="link-64" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-64', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-65" class="py-name"><a title="server.models.UserProfile" class="py-name" href="#" onclick="return doclink('link-65', 'UserProfile', 'link-4');">UserProfile</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">                <tt class="py-name">active</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">QUERY_PARAMS</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="server.views.UserAuthView.get" class="py-name" href="#" onclick="return doclink('link-66', 'get', 'link-29');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'active'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">active</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">                        <tt id="link-67" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-67', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-68" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-68', 'queryset', 'link-16');">queryset</a></tt><tt class="py-op">.</tt><tt class="py-name">filter</tt><tt class="py-op">(</tt><tt class="py-name">last_action__gte</tt><tt class="py-op">=</tt><tt class="py-name">timezone</tt><tt class="py-op">.</tt><tt class="py-name">now</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">datetime</tt><tt class="py-op">.</tt><tt class="py-name">timedelta</tt><tt class="py-op">(</tt><tt class="py-name">seconds</tt><tt class="py-op">=</tt><tt class="py-number">30</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">                 </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-69" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-69', 'queryset', 'link-16');">queryset</a></tt>          </tt>
+</div></div><a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">         </tt>
+<a name="GangViewSet"></a><div id="GangViewSet-def"><a name="L229"></a><tt class="py-lineno">229</tt> <a class="py-toggle" href="#" id="GangViewSet-toggle" onclick="return toggle('GangViewSet');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.views.GangViewSet-class.html">GangViewSet</a><tt class="py-op">(</tt><tt class="py-base-class">viewsets</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelViewSet</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="GangViewSet-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="GangViewSet-expanded"><a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">        <tt id="link-70" class="py-name"><a title="server.views.GangViewSet.authentication_classes
+server.views.MessageViewSet.authentication_classes
+server.views.UserProfileViewSet.authentication_classes
+server.views.UserViewSet.authentication_classes
+server.views.VenueViewSet.authentication_classes" class="py-name" href="#" onclick="return doclink('link-70', 'authentication_classes', 'link-15');">authentication_classes</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">SessionAuthentication</tt><tt class="py-op">,</tt> <tt class="py-name">BasicAuthentication</tt><tt class="py-op">)</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"><tt class="py-comment">#       permission_classes = (IsAuthenticated,)</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">        <tt id="link-71" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-71', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt id="link-72" class="py-name"><a title="server.models.Gang" class="py-name" href="#" onclick="return doclink('link-72', 'Gang', 'link-5');">Gang</a></tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">        <tt id="link-73" class="py-name"><a title="server.views.GangViewSet.serializer_class
+server.views.MessageViewSet.serializer_class
+server.views.UserProfileViewSet.serializer_class
+server.views.UserViewSet.serializer_class
+server.views.VenueViewSet.serializer_class" class="py-name" href="#" onclick="return doclink('link-73', 'serializer_class', 'link-18');">serializer_class</a></tt> <tt class="py-op">=</tt> <tt id="link-74" class="py-name"><a title="server.serializers.GangSerializer" class="py-name" href="#" onclick="return doclink('link-74', 'GangSerializer', 'link-12');">GangSerializer</a></tt> </tt>
+</div><a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"> </tt>
+<a name="UserViewSet"></a><div id="UserViewSet-def"><a name="L235"></a><tt class="py-lineno">235</tt> <a class="py-toggle" href="#" id="UserViewSet-toggle" onclick="return toggle('UserViewSet');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.views.UserViewSet-class.html">UserViewSet</a><tt class="py-op">(</tt><tt class="py-base-class">viewsets</tt><tt class="py-op">.</tt><tt class="py-base-class">ModelViewSet</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserViewSet-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="UserViewSet-expanded"><a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">        <tt id="link-75" class="py-name"><a title="server.views.GangViewSet.authentication_classes
+server.views.MessageViewSet.authentication_classes
+server.views.UserProfileViewSet.authentication_classes
+server.views.UserViewSet.authentication_classes
+server.views.VenueViewSet.authentication_classes" class="py-name" href="#" onclick="return doclink('link-75', 'authentication_classes', 'link-15');">authentication_classes</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">SessionAuthentication</tt><tt class="py-op">,</tt> <tt class="py-name">BasicAuthentication</tt><tt class="py-op">)</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-comment">#       permission_classes = (IsAuthenticated,)</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">        <tt id="link-76" class="py-name"><a title="server.views.GangViewSet.queryset
+server.views.MessageViewSet.queryset
+server.views.UserProfileViewSet.queryset
+server.views.UserViewSet.queryset
+server.views.VenueViewSet.queryset" class="py-name" href="#" onclick="return doclink('link-76', 'queryset', 'link-16');">queryset</a></tt> <tt class="py-op">=</tt> <tt class="py-name">User</tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">all</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">        <tt id="link-77" class="py-name"><a title="server.views.GangViewSet.serializer_class
+server.views.MessageViewSet.serializer_class
+server.views.UserProfileViewSet.serializer_class
+server.views.UserViewSet.serializer_class
+server.views.VenueViewSet.serializer_class" class="py-name" href="#" onclick="return doclink('link-77', 'serializer_class', 'link-18');">serializer_class</a></tt> <tt class="py-op">=</tt> <tt id="link-78" class="py-name"><a title="server.serializers.UserSerializer" class="py-name" href="#" onclick="return doclink('link-78', 'UserSerializer', 'link-13');">UserSerializer</a></tt> </tt>
+</div><a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">         </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">         </tt>
+<a name="UserAuthView"></a><div id="UserAuthView-def"><a name="L242"></a><tt class="py-lineno">242</tt> <a class="py-toggle" href="#" id="UserAuthView-toggle" onclick="return toggle('UserAuthView');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="server.views.UserAuthView-class.html">UserAuthView</a><tt class="py-op">(</tt><tt class="py-base-class">APIView</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserAuthView-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="UserAuthView-expanded"><a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">        <tt class="py-comment">#Login. Returns the current user.</tt> </tt>
+<a name="UserAuthView.get"></a><div id="UserAuthView.get-def"><a name="L245"></a><tt class="py-lineno">245</tt> <a class="py-toggle" href="#" id="UserAuthView.get-toggle" onclick="return toggle('UserAuthView.get');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="server.views.UserAuthView-class.html#get">get</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserAuthView.get-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UserAuthView.get-expanded"><a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">                <tt class="py-comment"># Only UserProfileSerializer is required to serialize data since</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">                <tt class="py-comment"># email is populated by the 'source' param on EmailField.</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-79" class="py-name" targets="Variable server.models.UserProfile.user=server.models.UserProfile-class.html#user"><a title="server.models.UserProfile.user" class="py-name" href="#" onclick="return doclink('link-79', 'user', 'link-79');">user</a></tt><tt class="py-op">.</tt><tt class="py-name">is_authenticated</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">                        <tt class="py-name">serializer</tt> <tt class="py-op">=</tt> <tt id="link-80" class="py-name"><a title="server.serializers.UserProfileSerializer" class="py-name" href="#" onclick="return doclink('link-80', 'UserProfileSerializer', 'link-11');">UserProfileSerializer</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">                                        <tt class="py-name">instance</tt><tt class="py-op">=</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="server.models.UserProfile.user" class="py-name" href="#" onclick="return doclink('link-81', 'user', 'link-79');">user</a></tt><tt class="py-op">.</tt><tt class="py-name">profile</tt><tt class="py-op">)</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">Response</tt><tt class="py-op">(</tt><tt class="py-name">serializer</tt><tt class="py-op">.</tt><tt class="py-name">data</tt><tt class="py-op">,</tt> <tt class="py-name">status</tt><tt class="py-op">=</tt><tt class="py-name">status</tt><tt class="py-op">.</tt><tt class="py-name">HTTP_200_OK</tt><tt class="py-op">)</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">Response</tt><tt class="py-op">(</tt><tt class="py-name">status</tt><tt class="py-op">=</tt><tt class="py-name">status</tt><tt class="py-op">.</tt><tt class="py-name">HTTP_401_UNAUTHORIZED</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">        <tt class="py-comment">#Register new user.</tt> </tt>
+<a name="UserAuthView.post"></a><div id="UserAuthView.post-def"><a name="L257"></a><tt class="py-lineno">257</tt> <a class="py-toggle" href="#" id="UserAuthView.post-toggle" onclick="return toggle('UserAuthView.post');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="server.views.UserAuthView-class.html#post">post</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">format</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="UserAuthView.post-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="UserAuthView.post-expanded"><a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">                <tt class="py-name">user_serializer</tt> <tt class="py-op">=</tt> <tt id="link-82" class="py-name"><a title="server.serializers.UserSerializer" class="py-name" href="#" onclick="return doclink('link-82', 'UserSerializer', 'link-13');">UserSerializer</a></tt><tt class="py-op">(</tt><tt class="py-name">data</tt><tt class="py-op">=</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">DATA</tt><tt class="py-op">)</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">                <tt class="py-name">errors</tt> <tt class="py-op">=</tt> <tt class="py-name">dict</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">user_serializer</tt><tt class="py-op">.</tt><tt class="py-name">is_valid</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">                        <tt id="link-83" class="py-name"><a title="server.models.UserProfile.user" class="py-name" href="#" onclick="return doclink('link-83', 'user', 'link-79');">user</a></tt> <tt class="py-op">=</tt><tt class="py-name">user_serializer</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">                        <tt class="py-name">data</tt> <tt class="py-op">=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">DATA</tt><tt class="py-op">.</tt><tt class="py-name">copy</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                        <tt class="py-name">data</tt><tt class="py-op">[</tt><tt class="py-string">'user'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">User</tt><tt class="py-op">.</tt><tt class="py-name">objects</tt><tt class="py-op">.</tt><tt class="py-name">latest</tt><tt class="py-op">(</tt><tt class="py-string">'id'</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">id</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">                        <tt class="py-name">user_profile_serializer</tt> <tt class="py-op">=</tt> <tt id="link-84" class="py-name"><a title="server.serializers.UserProfileSerializer" class="py-name" href="#" onclick="return doclink('link-84', 'UserProfileSerializer', 'link-11');">UserProfileSerializer</a></tt><tt class="py-op">(</tt><tt class="py-name">data</tt><tt class="py-op">=</tt><tt class="py-name">data</tt><tt class="py-op">)</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">user_profile_serializer</tt><tt class="py-op">.</tt><tt class="py-name">is_valid</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">                                <tt class="py-name">user_profile_serializer</tt><tt class="py-op">.</tt><tt class="py-name">save</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">                                <tt class="py-keyword">return</tt> <tt class="py-name">Response</tt><tt class="py-op">(</tt><tt class="py-name">user_profile_serializer</tt><tt class="py-op">.</tt><tt class="py-name">data</tt><tt class="py-op">,</tt> <tt class="py-name">status</tt><tt class="py-op">=</tt><tt class="py-name">status</tt><tt class="py-op">.</tt><tt class="py-name">HTTP_201_CREATED</tt><tt class="py-op">)</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line"> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">                        <tt class="py-name">errors</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">user_profile_serializer</tt><tt class="py-op">.</tt><tt class="py-name">errors</tt><tt class="py-op">)</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-name">Response</tt><tt class="py-op">(</tt><tt class="py-name">errors</tt><tt class="py-op">,</tt> <tt class="py-name">status</tt><tt class="py-op">=</tt><tt class="py-name">status</tt><tt class="py-op">.</tt><tt class="py-name">HTTP_400_BAD_REQUEST</tt><tt class="py-op">)</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">                <tt class="py-name">errors</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">user_serializer</tt><tt class="py-op">.</tt><tt class="py-name">errors</tt><tt class="py-op">)</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">Response</tt><tt class="py-op">(</tt><tt class="py-name">errors</tt><tt class="py-op">,</tt> <tt class="py-name">status</tt><tt class="py-op">=</tt><tt class="py-name">status</tt><tt class="py-op">.</tt><tt class="py-name">HTTP_400_BAD_REQUEST</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="server-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Jun 23 14:41:01 2014
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
