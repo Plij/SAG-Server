@@ -33,8 +33,12 @@ class VenueViewSet(viewsets.ModelViewSet):
 	serializer_class = VenueSerializer
 
 def getHeatMapData(request, event, timestamp):
-	#Codes a = All of the session data.
-	#
+	"""This function gets data from GameAnalytics to be used in our HeatMap.html
+	:param request: request object.
+	:param event: eventID passed in url
+	:param timestamp: number or letter to demonstrate what data is fetched from GameAnalyrics. (a = all, 1 = 1st day and so on..)
+	:returns: Response from GA server, if everything went well its a JSON message.
+	"""
 	if timestamp == 'a':
 		start = 1400310219
 		end = 1400609019
@@ -83,8 +87,20 @@ def getHeatMapData(request, event, timestamp):
 	r = HttpResponse(response.read())	 
 	print r
 	return HttpResponse(r)
+
 #Playerinfo can be the name of player or gang name of player, depending on the event.
 def eventHappened(request, eventId, playername, playerpos, playerinfo, playerdata):
+	"""This function is launched when we want to send information from realXtend to GameAnalytics, since REX does not support Patch or Post atm I have made this middleserver functionality to Django. 
+	:param request: request body.
+	:param eventId: id of the event we want to handle. Will be checked lower on, for example eventId 1 = Spray, 2 = policebust and so on. Check if structure.
+	:param playername: Name of the player in case needed, atm not used.
+	:param playerpos: String of playerpositions separated with , / %2C. Split from string into separate variables and then multiplied by 1000000, because GameAnalytics does not support huge ints. (Has to be divided when gotten later)
+	:param playerinfo: Some extra information about player, playername or player gang for example. Usually players gang here. 
+	:param playerdata: Player id made in realXtend or in this script. Is unique.
+	:returns: html body about succesfull event.
+	"""
+		
+
 	game_key = 'f58c639185081f602fee6f6b725349b7'
 	secret_key = '10d560a88e6b0050f8a42a60e806f5fc909f9ad3'
 	endpoint_url = 'http://api.gameanalytics.com/1'
@@ -131,13 +147,11 @@ def eventHappened(request, eventId, playername, playerpos, playerinfo, playerdat
 	if (eventId != 4 and eventId != 5):
 		playerposi = playerpos.split('%2C')
 		#Add multiplier because GA server makes values to int.
-		
 		message['x'] = math.modf(float(playerposi[0]) * 1000000)[1]
 		message['y'] = float(playerposi[1])
-		message['z'] = math.modf(float(playerposi[2]) * 1000000)[1]
-		
+		message['z'] = math.modf(float(playerposi[2]) * 1000000)[1]	
 	
-	#later add location somehow (maybe pass array in url?)
+	
 	print message
 	json_message = json.dumps(message)
 	digest = hashlib.md5()
@@ -154,6 +168,13 @@ def eventHappened(request, eventId, playername, playerpos, playerinfo, playerdat
 	return HttpResponse('<html><body>Event sent!</body></html>')
 
 def policeBust(request, gangsterId):
+	"""Function to handle policebust events from realXtend, because reX cannot do other than GET events I have made this function to our Django to work as middle server.
+	Function basically manipulates our MySQL database straight from here.
+	
+	:param request: Request body, not used atm.
+	:param gangsterId: Id of the gangster whose points we wanna lower, since he was busted.
+	:returns: http body of a succesful event.
+	"""
 	queryset = UserProfile.objects.get(pk=gangsterId)
 	queryset.bustedviapolice = 1
 	queryset.busted = queryset.busted + 1
